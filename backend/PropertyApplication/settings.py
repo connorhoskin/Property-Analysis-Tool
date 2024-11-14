@@ -58,7 +58,7 @@ ROOT_URLCONF = 'PropertyApplication.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': []
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -130,3 +130,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React development server
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
+

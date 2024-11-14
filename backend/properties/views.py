@@ -1,13 +1,9 @@
 # properties/views.py
-from django.shortcuts import render, redirect
 from rest_framework.response import Response
-
-from .models import Property
-from .forms import PropertyForm
-from .serializers import PropertySerializer
 from rest_framework.decorators import api_view
-
-
+from .models import Property
+from .serializers import PropertySerializer
+from django.views.decorators.csrf import csrf_exempt
 
 @api_view(['GET'])
 def property_list(request):
@@ -15,16 +11,13 @@ def property_list(request):
     serializer = PropertySerializer(properties, many=True)
     return Response(serializer.data)
 
+
+@csrf_exempt
+@api_view(['POST'])
 def property_create(request):
-    if request.method == 'POST':
-        form = PropertyForm(request.POST)
-        if form.is_valid():
-            form.save()  # Save the new property to the database
-            return redirect('property_list')  # Redirect to the properties list
-    else:
-        form = PropertyForm()  # Display an empty form
-    return render(request, 'property_create.html', {'form': form})
+    serializer = PropertySerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)
 
-
-def home(request):
-        return render(request, 'home.html')

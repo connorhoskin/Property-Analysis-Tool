@@ -1,29 +1,21 @@
-import React, { useEffect, useState } from 'react';
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './HomePage';
+import PropertiesList from './PropertiesList';
+import NewProperty from './NewProperty';
+import Tester   from './Tester';
 
 function App() {
-    const [properties, setProperties] = useState([]);
-
-    useEffect(() => {
-        fetch('http://127.0.0.1:8000/properties/')  // Your Django API endpoint
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                setProperties(data);
-            })
-            .catch(error => console.error('Error:', error));
-    }, []);
-
     return (
-        <div>
-            <h1>Properties List</h1>
-            <ul>
-                {properties.map(property => (
-                    <li key={property.id}>
-                        <strong>{property.address}</strong> - Purchase Price: ${property.purchase_price} - Expected Rent: ${property.expected_rent}
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <Router>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/properties" element={<PropertiesList />} />
+                <Route path="/properties/new" element={<NewProperty />} />
+                <Route path="/properties/tester" element={<Tester />} />
+            </Routes>
+        </Router>
     );
 }
 
