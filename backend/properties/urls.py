@@ -6,3 +6,6 @@ urlpatterns = [
     path('properties/', property_list, name='properties_page'),  # List of properties
     path('properties/new/', property_create, name='new_property_page'),  # Create new property
 ]
+
+
+##test
