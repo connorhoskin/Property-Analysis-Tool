@@ -19,3 +19,6 @@ def property_list(request):
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
 
+
+def home(request):
+        return render(request, 'home.html')
