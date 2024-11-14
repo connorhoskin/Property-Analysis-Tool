@@ -1,11 +1,19 @@
 # properties/views.py
 from django.shortcuts import render, redirect
+from rest_framework.response import Response
+
 from .models import Property
 from .forms import PropertyForm
+from .serializers import PropertySerializer
+from rest_framework.decorators import api_view
 
+
+
+@api_view(['GET'])
 def property_list(request):
-    properties = Property.objects.all()  # Fetch all properties from the database
-    return render(request, 'properties_list.html', {'properties': properties})
+    properties = Property.objects.all()
+    serializer = PropertySerializer(properties, many=True)
+    return Response(serializer.data)
 
 def property_create(request):
     if request.method == 'POST':
