@@ -6,3 +6,4 @@ urlpatterns = [
     path('api/', include('properties.urls')),  # Include URLs from the properties app
 ]
 
+## comment for git push just to see updates
