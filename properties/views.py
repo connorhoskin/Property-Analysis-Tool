@@ -1,23 +1,21 @@
-from django.shortcuts import render
-
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
+# properties/views.py
+from django.shortcuts import render, redirect
 from .models import Property
-from .serializers import PropertySerializer
+from .forms import PropertyForm
 
-@api_view(['GET', 'POST'])
 def property_list(request):
-    if request.method == 'GET':
-        properties = Property.objects.all()
-        serializer = PropertySerializer(properties, many=True)
-        return Response(serializer.data)
+    properties = Property.objects.all()  # Fetch all properties from the database
+    return render(request, 'properties_list.html', {'properties': properties})
 
+def property_create(request):
     if request.method == 'POST':
-        serializer = PropertySerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+        form = PropertyForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the new property to the database
+            return redirect('property_list')  # Redirect to the properties list
+    else:
+        form = PropertyForm()  # Display an empty form
+    return render(request, 'property_create.html', {'form': form})
 
 
 def home(request):
